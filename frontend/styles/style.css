@@ -354,3 +354,9 @@ footer {
 .resource-link:hover {
   background-color: #B98CB5;
 }
+
+/* Logo Styles */
+.logo img {
+  height: 80px; /* Adjust this value to make the logo bigger */
+  width: auto; /* Maintain aspect ratio */
+}
