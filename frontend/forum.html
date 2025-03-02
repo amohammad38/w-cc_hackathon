@@ -8,35 +8,71 @@
   <script type="module" src="scripts/app.js"></script>
 </head>
 <body>
+  <!-- Header with Logo and Navigation Bar -->
+  <header>
+    <div class="header-container">
+      <!-- Logo -->
+      <div class="logo">
+        <img src="path-to-your-logo.png" alt="UsFirst Logo">
+      </div>
 
-  <!-- Navigation Bar -->
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="map.html">Find Products</a></li>
-      <li><a href="forum.html">Forum</a></li>
-    </ul>
-  </nav>
+      <!-- Navigation Bar -->
+      <nav>
+        <ul>
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="map.html" class="nav-link">Find Products</a></li>
+          <li><a href="forum.html" class="nav-link">Forum</a></li>
+          <li><a href="forum.html" class="nav-link">Resources</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-  <section id="forum">
-    <h2>Community Forum</h2>
-    <!-- Forum Section -->
-  <!-- Dropdown to select a category -->
+  <!-- Forum Section -->
+  <main class="forum">
+    <h1>Community Forum</h1>
+    <p>Join the conversation and share your experiences, questions, and advice.</p>
+
+    <!-- Category Dropdown -->
+    <div class="forum-controls">
       <select id="category-select">
         <option value="health-tips">Health Tips</option>
         <option value="product-reviews">Product Reviews</option>
         <option value="birth-control">Birth Control</option>
         <!-- Add more categories here -->
       </select>
+      <button id="refresh-btn">Refresh</button>
+    </div>
 
-      <div id="forum-posts">
-        <!-- Forum posts will be listed here -->
-      </div>
-
+    <!-- New Post Section -->
+    <div class="new-post">
       <textarea id="new-post" placeholder="Post your question or advice..."></textarea>
       <button id="post-btn">Post</button>
+    </div>
+  
 
-  </section>
 
+    <!-- Forum Posts -->
+    <div id="forum-posts">
+      <!-- Example Post (can be dynamically generated) -->
+      <div class="post">
+        <h3>User123</h3>
+        <p>Has anyone tried the new birth control pill? I’d love to hear your experiences!</p>
+        <small>Posted in <span class="category">Birth Control</span> • 2 hours ago</small>
+      </div>
+      <div class="post">
+        <h3>User456</h3>
+        <p>I’m looking for recommendations for a good gynecologist in the area. Any suggestions?</p>
+        <small>Posted in <span class="category">Health Tips</span> • 5 hours ago</small>
+      </div>
+    </div>
+
+   
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Women's Health Product Finder</p>
+  </footer>
 </body>
 </html>
