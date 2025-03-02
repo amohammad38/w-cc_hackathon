@@ -141,6 +141,15 @@ footer {
     margin-bottom: 15px;
 }
 
+.post-item {
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Adds a soft shadow for a 3D effect */
+  border-radius: 8px; /* Rounded corners */
+  margin-bottom: 20px; /* Space between posts */
+  border: 1px solid #ddd; /* Light border for contrast */
+}
+
 .post h3 {
     font-size: 20px;
     margin-bottom: 10px;

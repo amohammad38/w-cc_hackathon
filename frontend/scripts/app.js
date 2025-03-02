@@ -68,44 +68,73 @@ function fetchStores(product) {
 // ------------------------------
 // 🔹 FORUM FUNCTIONALITY (FORUM PAGE)
 // ------------------------------
-document.getElementById('post-btn').addEventListener('click', function () {
-  const newPost = document.getElementById('new-post').value.trim();
-  const categorySelect = document.getElementById('category-select');
-  const selectedCategory = categorySelect.value; // Get selected category
+// 🔹 Add Forum Post functionality
+// 🔹 Add Forum Post functionality
+// 🔹 FORUM FUNCTIONALITY (FORUM PAGE)
+// ------------------------------
 
-  if (newPost) {
-    // Add the post to the selected category in Firestore
-    addDoc(collection(db, "forum", selectedCategory, "posts"), {
-      content: newPost,
-      createdAt: serverTimestamp(),
-    })
-      .then(() => {
-        alert("Post added successfully!");
-        document.getElementById('new-post').value = ""; // Clear input field
-        loadForumPosts(); // Reload posts for the selected category
-      })
-      .catch((error) => {
-        console.error("Error adding post:", error);
-      });
-  } else {
+// 🔹 Add Forum Post functionality
+function addForumPost() {
+  const newPostElement = document.getElementById('new-post');
+  const newPost = newPostElement.value.trim();
+
+  if (!newPost) {
     alert("Please enter a post.");
+    return;
   }
-});
 
+  const categorySelect = document.getElementById('category-select');
+  const selectedCategory = categorySelect.value;
 
-// Load posts for the selected category
+  if (!selectedCategory) {
+    console.error("Error: No category selected!");
+    return;
+  }
+
+  // Add a new post to Firestore for the selected category
+  const forumRef = collection(db, "forum", selectedCategory, "posts");
+  addDoc(forumRef, {
+    content: newPost,
+    createdAt: serverTimestamp()
+  })
+    .then(() => {
+      alert("Post added successfully!");
+      newPostElement.value = ""; // Clear input field
+      loadForumPosts(); // Reload posts
+    })
+    .catch((error) => {
+      console.error("Error adding post:", error);
+    });
+}
+
+// 🔹 Load Forum Posts based on the selected category
+// 🔹 Load Forum Posts based on the selected category
 function loadForumPosts() {
   const forumPosts = document.getElementById('forum-posts');
   const categorySelect = document.getElementById('category-select');
   const selectedCategory = categorySelect.value; // Get selected category value
-  forumPosts.innerHTML = ''; // Clear existing posts
 
-  const forumRef = collection(db, "forum", selectedCategory, "posts"); // Use selected category
-  const q = query(forumRef, orderBy("createdAt", "desc")); // Sort by creation time
+  // Clear existing posts before adding new ones
+  forumPosts.innerHTML = '';
 
-  // Get documents from Firestore based on query
+  // If no category is selected, exit early
+  if (!selectedCategory) {
+    console.log("No category selected.");
+    return;
+  }
+
+  const forumRef = collection(db, "forum", selectedCategory, "posts"); // Reference for selected category
+  const q = query(forumRef, orderBy("createdAt", "desc")); // Order by creation time (descending)
+
+  // Fetch posts for the selected category from Firestore
   getDocs(q)
     .then((querySnapshot) => {
+      // If no posts are found
+      if (querySnapshot.empty) {
+        forumPosts.innerHTML = `<p>No posts found in ${selectedCategory}.</p>`;
+        return;
+      }
+
       querySnapshot.forEach((doc) => {
         const post = doc.data();
         const postDate = post.createdAt ? new Date(post.createdAt.seconds * 1000).toLocaleString() : "Unknown time";
@@ -123,35 +152,16 @@ function loadForumPosts() {
     });
 }
 
-document.getElementById('category-select').addEventListener('change', function () {
-  loadForumPosts(); // Reload posts when category is changed
+
+// 🔹 Listen for category change to reload posts based on the selected category
+document.getElementById('category-select').addEventListener('change', function() {
+  loadForumPosts(); // Reload posts when category changes
 });
 
-document.getElementById("search-btn").addEventListener("click", async function() {
-  const product = document.getElementById("product-search").value;
-  const response = await fetch(`http://localhost:8080/api/locations?product=${product}`);
-  const stores = await response.json();
+// Listen for post submission
+document.getElementById('post-btn').addEventListener('click', addForumPost);
 
-  const storeListDiv = document.getElementById("store-list");
-  storeListDiv.innerHTML = ""; // Clear previous results
-
-  stores.forEach(store => {
-      const storeElement = document.createElement("div");
-      storeElement.textContent = `${store.name} - $${store.price}`;
-      storeListDiv.appendChild(storeElement);
-  });
-
-  displayStoresOnMap(stores);
-});
-
-function displayStoresOnMap(stores) {
-  stores.forEach(store => {
-      new google.maps.Marker({
-          position: { lat: store.lat, lng: store.lng },
-          map: map,
-          title: `${store.name} - $${store.price}`
-      });
-  });
-}
-
-
+// Initial load of posts for the selected category on page load
+window.onload = function() {
+  loadForumPosts(); // Load posts for the default category (e.g., "all")
+};
