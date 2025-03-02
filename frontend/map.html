@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Find Products - Women's Health Product Finder</title>
   <link rel="stylesheet" href="styles/style.css">
-  <script type="module" src="scripts/app.js"></script>
 </head>
 <body>
   <!-- Header with Logo and Navigation Bar -->
@@ -54,74 +53,148 @@
     <p>&copy; 2025 Women's Health Product Finder</p>
   </footer>
 
-  <!-- Load Google Maps API -->
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdiO-0AObjanRk4BjL-tIgXB-RGrORN94&callback=initMap"></script>
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Women's Health Product Finder</p>
-  </footer>
+  <!-- Load Google Maps API with Places Library -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdiO-0AObjanRk4BjL-tIgXB-RGrORN94&libraries=places&callback=initMap"></script>
 
-  <!-- Load Google Maps API -->
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdiO-0AObjanRk4BjL-tIgXB-RGrORN94&callback=initMap"></script>
-  <script src="scripts/map.js"></script>
-
+  <!-- Inline JavaScript -->
   <script>
     let map;
+    let service;
+    let userLocation;
 
-    function initMap(lat, lon) {
-        map = new google.maps.Map(document.getElementById("map"), {
-            center: { lat: lat, lng: lon }, // Default center (San Francisco)
-            zoom: 14
-        });
-        getUserLocation();
+    // Initialize the map and Places service
+    function initMap() {
+      // Default center (San Francisco)
+      const defaultLocation = { lat: 37.7749, lng: -122.4194 };
 
+      // Initialize the map
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: defaultLocation,
+        zoom: 10,
+      });
+
+      // Initialize the Places service
+      service = new google.maps.places.PlacesService(map);
+
+      // Get the user's location
+      getUserLocation();
     }
 
-</script>
+    // Get the user's location using ipgeolocation.io
+    function getUserLocation() {
+      const apiKey = 'a2edb5a752284005ad1d6a3ac81d590a'; // Replace with your ipgeolocation.io API key
+      const url = `https://api.ipgeolocation.io/ipgeo?apiKey=${apiKey}`;
 
-<script>
-  function getUserLocation() {
-  const apiKey = 'a2edb5a752284005ad1d6a3ac81d590a';  // Replace with your ipgeolocation.io API key
-  const url = `https://api.ipgeolocation.io/ipgeo?apiKey=${apiKey}`;
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          const lat = parseFloat(data.latitude);
+          const lng = parseFloat(data.longitude);
+          userLocation = new google.maps.LatLng(lat, lng);
 
-  fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                const lat = data.latitude;
-                const lon = data.longitude;
-                console.log('User Location:', lat, lon);  // Log the coordinates for debugging
+          console.log("User Location:", userLocation);
 
-        // Update map center based on user location
-        if (map) {
-            map.setCenter(new google.maps.LatLng(lat, lon));
-        }
+          // Update the map center to the user's location
+          map.setCenter(userLocation);
+
+          // Search for contraceptive care providers
+          searchPlaces(userLocation);
         })
-        .catch(error => {
-        console.error('Error fetching location:', error);
-        alert('Unable to get your location.');
-    });
-  }
+        .catch((error) => {
+          console.error("Error fetching location:", error);
+          alert("Unable to get your location.");
+        });
+    }
 
-window.onload = function() {
-  getUserLocation();
-};
+    // Search for contraceptive care providers using the Places API
+    function searchPlaces(location) {
+      const request = {
+        location: location,
+        radius: 160934, // 100 miles in meters
+        keyword: "Planned Parenthood", // Updated keyword
+        type: "health", // Add the type parameter here
+      };
 
+      service.nearbySearch(request, (results, status) => {
+        console.log("API Response:", results); // Log the full response
+        console.log("API Status:", status); // Log the status
 
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          console.log("Places found:", results);
 
-document.addEventListener('DOMContentLoaded', function () {
+          // Clear existing markers
+          clearMarkers();
+
+          // Add markers for each place found
+          results.forEach((place) => {
+            createMarker(place);
+          });
+
+          // Display the list of nearby stores
+          displayStoreList(results);
+        } else {
+          console.error("Places API error:", status);
+          alert("No contraceptive care providers found in your area.");
+        }
+      });
+    }
+
+    // Create a marker for a place
+    function createMarker(place) {
+      const marker = new google.maps.Marker({
+        map: map,
+        position: place.geometry.location,
+        title: place.name,
+      });
+
+      // Add an info window for the marker
+      const infowindow = new google.maps.InfoWindow({
+        content: `<strong>${place.name}</strong><br>${place.vicinity}`,
+      });
+
+      marker.addListener("click", () => {
+        infowindow.open(map, marker);
+      });
+    }
+
+    // Display the list of nearby stores
+    function displayStoreList(results) {
+      const storeList = document.getElementById("store-list-content");
+      storeList.innerHTML = ""; // Clear existing content
+
+      results.forEach((place) => {
+        const storeItem = document.createElement("div");
+        storeItem.className = "store-item";
+        storeItem.innerHTML = `
+          <h3>${place.name}</h3>
+          <p>Address: ${place.vicinity}</p>
+        `;
+        storeList.appendChild(storeItem);
+      });
+    }
+
+    // Clear existing markers
+    function clearMarkers() {
+      // You can implement this if you have a global array of markers
+    }
+
+    // Initialize the map when the page loads
+    window.initMap = initMap;
+
+    // Add event listener for the search button
+    document.addEventListener('DOMContentLoaded', function () {
       const searchButton = document.getElementById("search-btn");
       if (searchButton) {
         searchButton.addEventListener('click', function() {
-          // Add your logic for the search button click event
-          console.log("Search clicked!");
+          const product = document.getElementById("product-search").value.trim();
+          if (product) {
+            searchPlaces(userLocation); // Re-search with the user's location
+          } else {
+            alert("Please enter a product to search for.");
+          }
         });
       }
     });
-
-
-</script>
-  </script>
-
   </script>
 </body>
 </html>
