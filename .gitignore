@@ -1,0 +1,3 @@
+*.json
+*.cjs
+/node_modules
