@@ -6,58 +6,121 @@
   <title>Find Products - Women's Health Product Finder</title>
   <link rel="stylesheet" href="styles/style.css">
   <script type="module" src="scripts/app.js"></script>
-
 </head>
 <body>
-  
+  <!-- Header with Logo and Navigation Bar -->
+  <header>
+    <div class="header-container">
+      <!-- Logo -->
+      <div class="logo">
+        <img src="path-to-your-logo.png" alt="UsFirst Logo">
+      </div>
 
-  <!-- Navigation Bar -->
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="map.html">Find Products</a></li>
-      <li><a href="forum.html">Forum</a></li>
-    </ul>
-  </nav>
+      <!-- Navigation Bar -->
+      <nav>
+        <ul>
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="map.html" class="nav-link">Find Products</a></li>
+          <li><a href="forum.html" class="nav-link">Forum</a></li>
+          <li><a href="forum.html" class="nav-link">Resources</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
+  <!-- Search Bar Section -->
   <section id="search-bar">
     <h2>Find Women's Health Products</h2>
     <input type="text" id="product-search" placeholder="Search for a product (e.g., Birth Control)">
     <button id="search-btn">Search</button>
   </section>
 
-
   <!-- Google Map Container -->
-  <div id="map" style="width: 100%; height: 500px; margin-top: 20px;"></div>
+  <section id="map-container">
+    <h2>Store Locations</h2>
+    <div id="map" style="width: 100%; height: 500px;"></div>
+  </section>
 
-  <!-- Load Google Maps API -->
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdiO-0AObjanRk4BjL-tIgXB-RGrORN94&callback=initMap"></script>
-  <script src="scripts/map.js"></script>
-
-  <section id="map">
+  <!-- Nearby Stores List -->
+  <section id="store-list">
     <h2>Nearby Stores</h2>
-    <div id="store-list">
+    <div id="store-list-content">
       <!-- Stores will be listed here -->
     </div>
   </section>
 
-  <section id="map-container">
-    <h2>Store Locations</h2>
-    <div id="map" style="width: 100%; height: 500px;"></div>
-</section>
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Women's Health Product Finder</p>
+  </footer>
+
+  <!-- Load Google Maps API -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdiO-0AObjanRk4BjL-tIgXB-RGrORN94&callback=initMap"></script>
+<<<<<<< HEAD
 
 <script>
+=======
+  <script src="scripts/map.js"></script>
+
+  <script>
+>>>>>>> c81a24e5b5aff1a88d9af5b802e0861715a221db
     let map;
 
-    function initMap() {
+    function initMap(lat, lon) {
         map = new google.maps.Map(document.getElementById("map"), {
-            center: { lat: 37.7749, lng: -122.4194 }, // Default center (San Francisco)
-            zoom: 12
+            center: { lat: lat, lng: lon }, // Default center (San Francisco)
+            zoom: 14
         });
+        getUserLocation();
+
     }
+<<<<<<< HEAD
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+
+<script>
+  function getUserLocation() {
+  const apiKey = 'a2edb5a752284005ad1d6a3ac81d590a';  // Replace with your ipgeolocation.io API key
+  const url = `https://api.ipgeolocation.io/ipgeo?apiKey=${apiKey}`;
+
+  fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const lat = data.latitude;
+                const lon = data.longitude;
+                console.log('User Location:', lat, lon);  // Log the coordinates for debugging
+
+        // Update map center based on user location
+        if (map) {
+            map.setCenter(new google.maps.LatLng(lat, lon));
+        }
+        })
+        .catch(error => {
+        console.error('Error fetching location:', error);
+        alert('Unable to get your location.');
+    });
+  }
+
+window.onload = function() {
+  getUserLocation();
+};
 
 
+
+document.addEventListener('DOMContentLoaded', function () {
+      const searchButton = document.getElementById("search-btn");
+      if (searchButton) {
+        searchButton.addEventListener('click', function() {
+          // Add your logic for the search button click event
+          console.log("Search clicked!");
+        });
+      }
+    });
+
+
+</script>
+
+=======
+  </script>
+>>>>>>> c81a24e5b5aff1a88d9af5b802e0861715a221db
 </body>
 </html>

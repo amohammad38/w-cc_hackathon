@@ -122,22 +122,8 @@ footer {
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 25px;
     background-color: white;
-}
-
-#refresh-btn {
-    padding: 10px 15px;
-    background-color: #adc08c;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#refresh-btn:hover {
-    background-color: #2980b9;
 }
 
 /* Forum Posts */
@@ -150,6 +136,7 @@ footer {
     padding: 15px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 25px;
     margin-bottom: 15px;
 }
 
@@ -184,19 +171,21 @@ footer {
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 25px;
     margin-bottom: 10px;
     resize: none;
 }
 
 #post-btn {
-    padding: 10px 15px;
-    background-color: #adc08c;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  padding: 12px 25px;
+  background-color: #adc08c; /* Pastel pink */
+  color: white;
+  border: none;
+  border-radius: 25px; /* Rounded corners */
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  
 }
 
 #post-btn:hover {
@@ -212,4 +201,70 @@ footer {
 
 .new-post {
   margin-bottom: 30px; /* Adds space below the new post section */
+}
+
+/* Search Bar Section */
+#search-bar {
+  text-align: center;
+  margin: 40px auto;
+  max-width: 800px;
+  padding: 20px;
+}
+
+#search-bar h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+#product-search {
+  width: 70%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 25px; /* Rounded corners */
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+#product-search:focus {
+  border-color: #D4A9D1; /* Highlight border on focus */
+}
+
+#search-btn {
+  padding: 12px 25px;
+  background-color: #adc08c; /* Pastel pink */
+  color: white;
+  border: none;
+  border-radius: 25px; /* Rounded corners */
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 10px; /* Space between input and button */
+}
+
+#search-btn:hover {
+  background-color: #B98CB5; /* Slightly darker pastel pink on hover */
+}
+
+/* Center the map container */
+#map-container {
+  text-align: center; /* Centers the heading */
+  max-width: 1200px; /* Optional: Limits the width of the container */
+  margin: 0 auto; /* Centers the container horizontally */
+  padding: 20px; /* Adds some spacing */
+}
+
+/* Style the heading */
+#map-container h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #2c3e50; /* Dark blue-gray for contrast */
+}
+
+/* Style the map */
+#map {
+  margin: 0 auto; /* Centers the map horizontally */
+  border-radius: 10px; /* Optional: Adds rounded corners */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow */
 }
