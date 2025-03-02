@@ -127,4 +127,31 @@ document.getElementById('category-select').addEventListener('change', function (
   loadForumPosts(); // Reload posts when category is changed
 });
 
+document.getElementById("search-btn").addEventListener("click", async function() {
+  const product = document.getElementById("product-search").value;
+  const response = await fetch(`http://localhost:8080/api/locations?product=${product}`);
+  const stores = await response.json();
+
+  const storeListDiv = document.getElementById("store-list");
+  storeListDiv.innerHTML = ""; // Clear previous results
+
+  stores.forEach(store => {
+      const storeElement = document.createElement("div");
+      storeElement.textContent = `${store.name} - $${store.price}`;
+      storeListDiv.appendChild(storeElement);
+  });
+
+  displayStoresOnMap(stores);
+});
+
+function displayStoresOnMap(stores) {
+  stores.forEach(store => {
+      new google.maps.Marker({
+          position: { lat: store.lat, lng: store.lng },
+          map: map,
+          title: `${store.name} - $${store.price}`
+      });
+  });
+}
+
 
