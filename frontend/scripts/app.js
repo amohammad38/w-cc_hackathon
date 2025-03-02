@@ -1,6 +1,6 @@
 // Import Firebase
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js';
-import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js';
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp, doc } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js';
 
 // Firebase Config
 const firebaseConfig = {
@@ -68,33 +68,43 @@ function fetchStores(product) {
 // ------------------------------
 // 🔹 FORUM FUNCTIONALITY (FORUM PAGE)
 // ------------------------------
-function addForumPost() {
+document.getElementById('post-btn').addEventListener('click', function () {
   const newPost = document.getElementById('new-post').value.trim();
+  const categorySelect = document.getElementById('category-select');
+  const selectedCategory = categorySelect.value; // Get selected category
 
-  if (!newPost) {
-    alert("Please enter a post.");
-    return;
-  }
-
-  addDoc(collection(db, "forum"), {
-    content: newPost,
-    createdAt: serverTimestamp()
-  })
-    .then(() => {
-      alert("Post added successfully!");
-      document.getElementById('new-post').value = ""; // Clear input field
-      loadForumPosts(); // Reload posts
+  if (newPost) {
+    // Add the post to the selected category in Firestore
+    addDoc(collection(db, "forum", selectedCategory, "posts"), {
+      content: newPost,
+      createdAt: serverTimestamp(),
     })
-    .catch((error) => {
-      console.error("Error adding post:", error);
-    });
-}
+      .then(() => {
+        alert("Post added successfully!");
+        document.getElementById('new-post').value = ""; // Clear input field
+        loadForumPosts(); // Reload posts for the selected category
+      })
+      .catch((error) => {
+        console.error("Error adding post:", error);
+      });
+  } else {
+    alert("Please enter a post.");
+  }
+});
 
+
+// Load posts for the selected category
 function loadForumPosts() {
   const forumPosts = document.getElementById('forum-posts');
-  forumPosts.innerHTML = '';
+  const categorySelect = document.getElementById('category-select');
+  const selectedCategory = categorySelect.value; // Get selected category value
+  forumPosts.innerHTML = ''; // Clear existing posts
 
-  getDocs(collection(db, "forum"))
+  const forumRef = collection(db, "forum", selectedCategory, "posts"); // Use selected category
+  const q = query(forumRef, orderBy("createdAt", "desc")); // Sort by creation time
+
+  // Get documents from Firestore based on query
+  getDocs(q)
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         const post = doc.data();
@@ -112,3 +122,9 @@ function loadForumPosts() {
       console.error("Error fetching forum posts:", error);
     });
 }
+
+document.getElementById('category-select').addEventListener('change', function () {
+  loadForumPosts(); // Reload posts when category is changed
+});
+
+
