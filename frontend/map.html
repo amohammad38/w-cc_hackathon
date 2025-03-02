@@ -6,47 +6,59 @@
   <title>Find Products - Women's Health Product Finder</title>
   <link rel="stylesheet" href="styles/style.css">
   <script type="module" src="scripts/app.js"></script>
-
 </head>
 <body>
-  
+  <!-- Header with Logo and Navigation Bar -->
+  <header>
+    <div class="header-container">
+      <!-- Logo -->
+      <div class="logo">
+        <img src="path-to-your-logo.png" alt="UsFirst Logo">
+      </div>
 
-  <!-- Navigation Bar -->
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="map.html">Find Products</a></li>
-      <li><a href="forum.html">Forum</a></li>
-    </ul>
-  </nav>
+      <!-- Navigation Bar -->
+      <nav>
+        <ul>
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="map.html" class="nav-link">Find Products</a></li>
+          <li><a href="forum.html" class="nav-link">Forum</a></li>
+          <li><a href="forum.html" class="nav-link">Resources</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
+  <!-- Search Bar Section -->
   <section id="search-bar">
     <h2>Find Women's Health Products</h2>
     <input type="text" id="product-search" placeholder="Search for a product (e.g., Birth Control)">
     <button id="search-btn">Search</button>
   </section>
 
-
   <!-- Google Map Container -->
-  <div id="map" style="width: 100%; height: 500px; margin-top: 20px;"></div>
+  <section id="map-container">
+    <h2>Store Locations</h2>
+    <div id="map" style="width: 100%; height: 500px;"></div>
+  </section>
+
+  <!-- Nearby Stores List -->
+  <section id="store-list">
+    <h2>Nearby Stores</h2>
+    <div id="store-list-content">
+      <!-- Stores will be listed here -->
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Women's Health Product Finder</p>
+  </footer>
 
   <!-- Load Google Maps API -->
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdiO-0AObjanRk4BjL-tIgXB-RGrORN94&callback=initMap"></script>
   <script src="scripts/map.js"></script>
 
-  <section id="map">
-    <h2>Nearby Stores</h2>
-    <div id="store-list">
-      <!-- Stores will be listed here -->
-    </div>
-  </section>
-
-  <section id="map-container">
-    <h2>Store Locations</h2>
-    <div id="map" style="width: 100%; height: 500px;"></div>
-</section>
-
-<script>
+  <script>
     let map;
 
     function initMap() {
@@ -55,9 +67,6 @@
             zoom: 12
         });
     }
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
-
-
+  </script>
 </body>
 </html>
