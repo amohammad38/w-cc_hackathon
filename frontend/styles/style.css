@@ -281,6 +281,17 @@ footer {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow */
 }
 
+.about-image {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.about-image img {
+  max-width: 80%;  /* Makes sure it scales well on all screens */
+  height: auto;
+  border-radius: 10px; /* Adds rounded corners for a softer look */
+}
+
 /* RESOURCES PAGE */
 
 /* Resources Section */
